@@ -1,0 +1,23 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    distribution:
+      minimum-expected-value:
+        http:
+          server: 5ms
+      maximum-expected-value:
+        http:
+          server: 1000ms
+      percentiles-histogram:
+        http:
+          server:
+            requests: 'true'
+    tags:
+      application: app
+logging:
+  pattern:
+    console: '%d{HH:mm:ss.SSS} [%t] [traceID=%X{trace_id}] [spanID=%X{span_id}] %-5level
+      %logger{36} - %msg%n'
