@@ -4,14 +4,17 @@ x-logging: &default-logging
     loki-url: 'http://localhost:3100/api/prom/push'
     loki-pipeline-stages: |
       - multiline:
-          firstline: '^\d{4}-\d{2}-\d{2} \d{1,2}:\d{2}:\d{2}'
+          firstline: '^\d{2}:\d{2}:\d{2}.\d{3}'
           max_wait_time: 3s
       - regex:
-          expression: '^(?P<time>\d{4}-\d{2}-\d{2} \d{1,2}:\d{2}:\d{2},d{3}) (?P<message>(?s:.*))$$'
+          expression: '^(?P<time>\d{2}:\d{2}:\d{2}.\d{3}) (?P<message>(?s:.*))$$'
 
 version: "3.4"
 
 services:
+
+  # Infrastructure
+
   loki:
     image: grafana/loki:2.6.1
     command: -config.file=/etc/loki/local-config.yaml
@@ -30,9 +33,6 @@ services:
     depends_on:
       - loki
     logging: *default-logging
-    # TODO: remove!!!
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
 
   tempo:
     image: grafana/tempo:1.5.0
@@ -59,4 +59,51 @@ services:
       GF_AUTH_ANONYMOUS_ENABLED: "true"
       GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
       GF_AUTH_DISABLE_LOGIN_FORM: "true"
+    logging: *default-logging
+
+  # Applications
+
+  app-a:
+    build: ./app/
+    environment:
+      - TARGET_ONE_HOST=app-b
+      - TARGET_TWO_HOST=app-c
+      - OTEL_EXPORTER=otlp_span
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
+      - OTEL_EXPORTER_OTLP_INSECURE=true
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=app-a,compose_service=app-a
+      - OTEL_METRICS_EXPORTER=none
+      - MANAGEMENT_METRICS_TAGS_APPLICATION=app-a
+    ports:
+      - "8080:8080"
+    logging: *default-logging
+
+  app-b:
+    build: ./app/
+    environment:
+      - TARGET_ONE_HOST=app-b
+      - TARGET_TWO_HOST=app-c
+      - OTEL_EXPORTER=otlp_span
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
+      - OTEL_EXPORTER_OTLP_INSECURE=true
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=app-b,compose_service=app-b
+      - OTEL_METRICS_EXPORTER=none
+      - MANAGEMENT_METRICS_TAGS_APPLICATION=app-b
+    ports:
+      - "8081:8080"
+    logging: *default-logging
+
+  app-c:
+    build: ./app/
+    environment:
+      - TARGET_ONE_HOST=app-b
+      - TARGET_TWO_HOST=app-c
+      - OTEL_EXPORTER=otlp_span
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
+      - OTEL_EXPORTER_OTLP_INSECURE=true
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=app-c,compose_service=app-c
+      - OTEL_METRICS_EXPORTER=none
+      - MANAGEMENT_METRICS_TAGS_APPLICATION=app-c
+    ports:
+      - "8082:8080"
     logging: *default-logging

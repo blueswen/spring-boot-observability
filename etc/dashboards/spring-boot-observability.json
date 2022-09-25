@@ -140,7 +140,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "http_server_requests_seconds_count{application=\"$app_name\", uri!=\"/actuator/prometheus\"}",
+          "expr": "sum by(uri) (http_server_requests_seconds_count{application=\"$app_name\", uri!=\"/actuator/prometheus\"})",
           "interval": "",
           "legendFormat": "{{method}} {{uri}}",
           "range": true,
@@ -209,7 +209,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "http_server_requests_seconds_sum{application=\"$app_name\"} / http_server_requests_seconds_count{application=\"$app_name\"}",
+          "expr": "sum by(uri)(http_server_requests_seconds_sum{application=\"$app_name\"}) / sum by(uri)(http_server_requests_seconds_count{application=\"$app_name\"})",
           "interval": "",
           "legendFormat": "{{method}} {{uri}}",
           "range": true,
@@ -754,7 +754,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(http_server_requests_seconds_count{application=\"$app_name\"}[1m])",
+          "expr": "sum by(uri)(rate(http_server_requests_seconds_count{application=\"$app_name\"}[1m]))",
           "interval": "",
           "legendFormat": "{{uri}}",
           "range": true,
@@ -951,7 +951,7 @@
     "list": [
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "app-a",
           "value": "app-a"
         },
