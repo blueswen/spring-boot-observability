@@ -939,7 +939,7 @@
           "refId": "A"
         }
       ],
-      "title": "Log of All FastAPI App",
+      "title": "Log of All Spring Boot Apps",
       "type": "logs"
     }
   ],
