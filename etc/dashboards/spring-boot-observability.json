@@ -933,7 +933,7 @@
             "uid": "loki"
           },
           "editorMode": "code",
-          "expr": "{compose_service=~\"app-.*\"} | pattern `<time> [<_>] [<_>=<trace_id>] [<_>=<span_id>] <type> <class> - <msg>` | line_format \"{{.compose_service}}\\t{{.type}}\\t traceID={{.trace_id}}\\t{{trim .class}}\\t {{.msg}}\"",
+          "expr": "{compose_service=~\"app-.*\"} | pattern `<time> [<_>] [<_>=<trace_id>] [<_>=<span_id>] <type> <class> - <msg>` | line_format \"{{.compose_service}}\\t{{.type}}\\t traceID={{.trace_id}}\\t{{trim .class}}\\t {{.msg}}\" |= \"$log_keyword\"",
           "hide": false,
           "queryType": "range",
           "refId": "A"
