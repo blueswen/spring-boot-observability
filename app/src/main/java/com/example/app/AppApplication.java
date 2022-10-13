@@ -1,8 +1,8 @@
 package com.example.app;
 
 import org.apache.http.client.fluent.Request;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +20,7 @@ import java.util.Random;
 @SpringBootApplication
 @RestController
 public class AppApplication {
-    private static final Logger logger = LogManager.getLogger(AppApplication.class);
+    Logger logger = LoggerFactory.getLogger(AppApplication.class);
 
     public static void main(String[] args) {
         SpringApplication.run(AppApplication.class, args);
@@ -28,13 +28,12 @@ public class AppApplication {
 
     @GetMapping("/")
     public String root(@RequestParam(value = "name", defaultValue = "World") String name, @RequestHeader HttpHeaders headers) {
-        logger.error(headers);
+        logger.error(headers.toString());
         logger.error(String.format("Hello %s!!", name));
         logger.debug("Debugging log");
         logger.info("Info log");
         logger.warn("Hey, This is a warning!");
         logger.error("Oops! We have an Error. OK");
-        logger.fatal("Damn! Fatal error. Please fix me.");
         return String.format("Hello %s!!", name);
     }
 

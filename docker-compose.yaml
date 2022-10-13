@@ -4,10 +4,10 @@ x-logging: &default-logging
     loki-url: 'http://localhost:3100/api/prom/push'
     loki-pipeline-stages: |
       - multiline:
-          firstline: '^\d{2}:\d{2}:\d{2}.\d{3}'
+          firstline: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3}'
           max_wait_time: 3s
       - regex:
-          expression: '^(?P<time>\d{2}:\d{2}:\d{2}.\d{3}) (?P<message>(?s:.*))$$'
+          expression: '^(?P<date>\d{4}-\d{2}-\d{2}) (?P<time>\d{2}:\d{2}:\d{2}.\d{3}) (?P<message>(?s:.*))$$'
 
 version: "3.4"
 
@@ -22,7 +22,7 @@ services:
       - "3100:3100"
 
   prometheus:
-    image: prom/prometheus:v2.37.1
+    image: prom/prometheus:v2.39.1
     ports:
       - "9090:9090"
     volumes:
@@ -45,7 +45,7 @@ services:
     logging: *default-logging
 
   grafana:
-    image: grafana/grafana:9.1.6
+    image: grafana/grafana:9.1.7
     ports:
       - "3000:3000"
     volumes:
@@ -68,9 +68,7 @@ services:
     environment:
       - TARGET_ONE_HOST=app-b
       - TARGET_TWO_HOST=app-c
-      - OTEL_EXPORTER=otlp_span
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
-      - OTEL_EXPORTER_OTLP_INSECURE=true
       - OTEL_RESOURCE_ATTRIBUTES=service.name=app-a,compose_service=app-a
       - OTEL_METRICS_EXPORTER=none
       - MANAGEMENT_METRICS_TAGS_APPLICATION=app-a
@@ -83,9 +81,7 @@ services:
     environment:
       - TARGET_ONE_HOST=app-b
       - TARGET_TWO_HOST=app-c
-      - OTEL_EXPORTER=otlp_span
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
-      - OTEL_EXPORTER_OTLP_INSECURE=true
       - OTEL_RESOURCE_ATTRIBUTES=service.name=app-b,compose_service=app-b
       - OTEL_METRICS_EXPORTER=none
       - MANAGEMENT_METRICS_TAGS_APPLICATION=app-b
@@ -98,9 +94,7 @@ services:
     environment:
       - TARGET_ONE_HOST=app-b
       - TARGET_TWO_HOST=app-c
-      - OTEL_EXPORTER=otlp_span
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
-      - OTEL_EXPORTER_OTLP_INSECURE=true
       - OTEL_RESOURCE_ATTRIBUTES=service.name=app-c,compose_service=app-c
       - OTEL_METRICS_EXPORTER=none
       - MANAGEMENT_METRICS_TAGS_APPLICATION=app-c

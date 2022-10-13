@@ -2,22 +2,17 @@ management:
   endpoints:
     web:
       exposure:
-        include: '*'
+        include: prometheus
   metrics:
+    tags:
+      application: app
     distribution:
-      minimum-expected-value:
-        http:
-          server: 5ms
-      maximum-expected-value:
-        http:
-          server: 1000ms
       percentiles-histogram:
         http:
           server:
             requests: 'true'
-    tags:
-      application: app
 logging:
   pattern:
-    console: '%d{HH:mm:ss.SSS} [%t] [traceID=%X{trace_id}] [spanID=%X{span_id}] %-5level
-      %logger{36} - %msg%n'
+    level: "trace_id=%mdc{trace_id} span_id=%mdc{span_id} trace_flags=%mdc{trace_flags} %p"
+  level:
+    com.example.app: DEBUG
