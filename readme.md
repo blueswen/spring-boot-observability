@@ -10,6 +10,31 @@ Observe the Spring Boot application with three pillars of observability on [Graf
 
 This demo project is a Spring Boot version of [FastAPI with Observability](https://github.com/blueswen/fastapi-observability) and is also inspired by [Cloud Observability with Grafana and Spring Boot](https://github.com/qaware/cloud-observability-grafana-spring-boot).
 
+## Table of contents
+
+  - [Quick Start](#quick-start)
+  - [Explore with Grafana](#explore-with-grafana)
+    - [Metrics to Traces](#metrics-to-traces)
+    - [Traces to Logs](#traces-to-logs)
+    - [Logs to Traces](#logs-to-traces)
+  - [Detail](#detail)
+    - [Spring Boot Application](#spring-boot-application)
+      - [OpenTelemetry Instrumentation](#opentelemetry-instrumentation)
+      - [Logs](#logs)
+      - [Traces](#traces)
+      - [Metrics](#metrics)
+        - [Metrics with Exemplar](#metrics-with-exemplar)
+    - [Prometheus - Metrics](#prometheus---metrics)
+      - [Prometheus Config](#prometheus-config)
+      - [Grafana Data Source](#grafana-data-source)
+    - [Tempo - Traces](#tempo---traces)
+      - [Grafana Data Source](#grafana-data-source-1)
+    - [Loki - Logs](#loki---logs)
+      - [Loki Docker Driver](#loki-docker-driver)
+      - [Grafana Data Source](#grafana-data-source-2)
+    - [Grafana](#grafana)
+  - [Reference](#reference)
+
 ## Quick Start
 
 0. If your machine is Apple Silicon, pull ```linux/arm64/v8``` platform java images with ```pull_arm_images.sh``` first.
@@ -307,6 +332,8 @@ management:
             requests: 'true'
 ```
 
+Check more options for distribution metrics on the [Spring Boot document](https://docs.spring.io/spring-boot/docs/2.7.3/reference/html/actuator.html#actuator.metrics.customizing.per-meter-properties).
+
 As previously mentioned, Exemplar is a new datatype proposed in OpenMetrics, and the default `/actuator/prometheus` provide metrics with Prometheus format. So we need to [add some headers](https://docs.spring.io/spring-boot/docs/current/actuator-api/htmlsingle/#prometheus.retrieving:~:text=The%20default%20response%20content%20type%20is%20text/plain%3Bversion%3D0.0.4.%20The%20endpoint%20can%20also%20produce%20application/openmetrics%2Dtext%3Bversion%3D1.0.0%20when%20called%20with%20an%20appropriate%20Accept%20header%2C%20as%20shown%20in%20the%20following%20curl%2Dbased%20example%3A) to get the metrics with OpenMetrics format as follows:
 
 ```bash
@@ -517,7 +544,6 @@ grafana:
 ## Reference
 
 1. [Cloud Observability with Grafana and Spring Boot](https://github.com/qaware/cloud-observability-grafana-spring-boot)
-2. [Cloud Observability With Grafana And Spring Boot](https://blog.qaware.de/posts/cloud-observability-grafana-spring-boot/)
-3. [Exemplars support for Prometheus Histogram](https://github.com/micrometer-metrics/micrometer/issues/2812)
-4. [OpenTelemetry SDK Autoconfigure](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md)
-5. [Java system properties and environment variables](https://stackoverflow.com/questions/7054972/java-system-properties-and-environment-variables)
+2. [Exemplars support for Prometheus Histogram](https://github.com/micrometer-metrics/micrometer/issues/2812)
+3. [OpenTelemetry SDK Autoconfigure](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md)
+4. [Java system properties and environment variables](https://stackoverflow.com/questions/7054972/java-system-properties-and-environment-variables)
