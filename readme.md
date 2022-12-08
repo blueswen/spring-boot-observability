@@ -12,6 +12,8 @@ This demo project is a Spring Boot version of [FastAPI with Observability](https
 
 ## Table of contents
 
+- [Spring Boot with Observability](#spring-boot-with-observability)
+  - [Table of contents](#table-of-contents)
   - [Quick Start](#quick-start)
   - [Explore with Grafana](#explore-with-grafana)
     - [Metrics to Traces](#metrics-to-traces)
@@ -52,7 +54,7 @@ This demo project is a Spring Boot version of [FastAPI with Observability](https
    docker-compose up -d
    ```
 
-3. Send requests with [siege](https://linux.die.net/man/1/siege) to the Spring Boot app
+3. Send requests with [siege](https://linux.die.net/man/1/siege) and curl to the Spring Boot app
 
    ```bash
    bash request-script.sh
@@ -91,7 +93,7 @@ Get Trace ID and tags (here is `compose.service`) defined in Tempo data source f
 
 ### Logs to Traces
 
-Get Trace ID pared from log (regex defined in Loki data source), then query in Tempo.
+Get Trace ID from log (regex defined in Loki data source), then query in Tempo.
 
 ![Logs to Traces](./images/logs-to-traces.png)
 
