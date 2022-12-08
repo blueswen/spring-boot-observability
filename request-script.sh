@@ -1,4 +1,4 @@
-TIMES=1000
+TIMES=1
 for i in $(eval echo "{1..$TIMES}")
 do
     siege -c 1 -r 10 http://localhost:8080/
