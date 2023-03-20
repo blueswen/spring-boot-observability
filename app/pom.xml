@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.3</version>
+		<version>2.7.9</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
@@ -18,12 +18,11 @@
 	</properties>
 
 	<dependencyManagement>
-		<!-- Temporarily use Prometheus 0.16.0 with important Exemplar fixes -->
 		<dependencies>
 			<dependency>
-				<groupId>io.prometheus</groupId>
-				<artifactId>simpleclient_bom</artifactId>
-				<version>0.16.0</version>
+				<groupId>io.opentelemetry</groupId>
+				<artifactId>opentelemetry-bom</artifactId>
+				<version>1.24.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -55,7 +54,7 @@
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
-			<version>1.9.5</version>
+			<version>1.10.5</version>
 		</dependency>
 
 		<dependency>
@@ -71,7 +70,12 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>fluent-hc</artifactId>
-			<version>4.5.13</version>
+			<version>4.5.14</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-api</artifactId>
 		</dependency>
 	</dependencies>
 
