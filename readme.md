@@ -283,23 +283,7 @@ http_server_requests_seconds_max{application="app",exception="None",method="GET"
 Exemplar is a new datatype proposed in [OpenMetrics](https://github.com/OpenObservability/OpenMetrics/blob/main/specification/OpenMetrics.md#exemplars). To enable the Exemplar feature there are some dependencies requirements:
 
 1. Spring Boot >= 2.7.0: Spring Boot supported Prometheus Exemplars since [v2.7.0-RC1](https://github.com/spring-projects/spring-boot/releases/tag/v2.7.0-RC1).
-2. Micrometer >= 1.9.0: Micrometer supported Exemplar for Prometheus Histogram and Prometheus Counter since [1.9.0](https://github.com/micrometer-metrics/micrometer/releases/tag/v1.9.0).
-3. io.prometheus.simpleclient_common >= 0.16.0: Prometheus Java Simpleclient Common supported for OpenTelemetry trace sampling since [0.16.0](https://github.com/prometheus/client_java/releases/tag/parent-0.16.0)
-
-```xml
-<dependencyManagement>
-   <!-- Temporarily use Prometheus 0.16.0 with important Exemplar fixes, the latest Micrometer Registry Prometheus 1.9.5 still using io.prometheus.simpleclient_common 0.15.0 https://mvnrepository.com/artifact/io.micrometer/micrometer-registry-prometheus/1.9.5 -->
-   <dependencies>
-      <dependency>
-         <groupId>io.prometheus</groupId>
-         <artifactId>simpleclient_bom</artifactId>
-         <version>0.16.0</version>
-         <type>pom</type>
-         <scope>import</scope>
-      </dependency>
-   </dependencies>
-</dependencyManagement>
-```
+2. Micrometer >= 1.10.0: Micrometer supported Exemplar for Prometheus Histogram and Prometheus Counter since [1.9.0](https://github.com/micrometer-metrics/micrometer/releases/tag/v1.9.0) and using io.prometheus.simpleclient_common 0.16.0 since [1.10.0](https://mvnrepository.com/artifact/io.micrometer/micrometer-registry-prometheus/1.10.0).
 
 Additionally, we need to add an [Exemplar Sampler](app/src/main/java/com/example/app/PrometheusExemplarSamplerConfiguration.java) (Source from [qaware/cloud-observability-grafana-spring-boot](https://github.com/qaware/cloud-observability-grafana-spring-boot/blob/b331b87b1a7f0f5b5d57150e0356e6a26af967a2/spring-boot-app/src/main/java/de/qaware/demo/cloudobservability/PrometheusExemplarSamplerConfiguration.java)) as follows:
 
@@ -536,7 +520,7 @@ editable: true
 ```yaml
 # grafana in docker-compose.yaml
 grafana:
-   image: grafana/grafana:9.1.7
+   image: grafana/grafana:9.4.3
    volumes:
       - ./etc/grafana/:/etc/grafana/provisioning/datasources # data sources
       - ./etc/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml # dashboard setting
