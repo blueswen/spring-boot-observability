@@ -6,7 +6,7 @@ Observe the Spring Boot application with three pillars of observability on [Graf
 2. Metrics with [Prometheus](https://prometheus.io/), [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/current/actuator-api/htmlsingle/), and [Micrometer](https://micrometer.io/)
 3. Logs with [Loki](https://github.com/grafana/loki) and [Logback](https://logback.qos.ch/)
 
-![Observability Architecture](./images/observability-arch.png)
+![Observability Architecture](./images/observability-arch.jpg)
 
 This demo project is a Spring Boot version of [FastAPI with Observability](https://github.com/blueswen/fastapi-observability) and is also inspired by [Cloud Observability with Grafana and Spring Boot](https://github.com/qaware/cloud-observability-grafana-spring-boot).
 
