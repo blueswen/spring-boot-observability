@@ -61,7 +61,7 @@ This demo project is a Spring Boot version of [FastAPI with Observability](https
    bash trace.sh
    ```
 
-4. Check predefined dashboard ```Spring Boot Observability``` on Grafana [http://localhost:3000/](http://localhost:3000/)
+4. Check predefined dashboard ```Spring Boot Observability``` on Grafana [http://localhost:3000/](http://localhost:3000/) and login with default account ```admin``` and password ```admin```
 
    Dashboard screenshot:
 
