@@ -1,5 +1,5 @@
-FROM curlimages/curl:8.1.1 AS download
-ARG OTEL_AGENT_VERSION="1.27.0"
+FROM curlimages/curl:8.2.1 AS download
+ARG OTEL_AGENT_VERSION="1.29.0"
 RUN curl --silent --fail -L "https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v${OTEL_AGENT_VERSION}/opentelemetry-javaagent.jar" \
     -o "$HOME/opentelemetry-javaagent.jar"
 

@@ -22,7 +22,7 @@
 			<dependency>
 				<groupId>io.opentelemetry</groupId>
 				<artifactId>opentelemetry-bom</artifactId>
-				<version>1.27.0</version>
+				<version>1.29.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -54,7 +54,7 @@
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
-			<version>1.11.1</version>
+			<version>1.11.3</version>
 		</dependency>
 
 		<dependency>
