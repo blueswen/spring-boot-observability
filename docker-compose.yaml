@@ -64,11 +64,11 @@ services:
     environment:
       - TARGET_ONE_HOST=app-b
       - TARGET_TWO_HOST=app-c
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
-      - OTEL_SERVICE_NAME=app-a
-      - OTEL_RESOURCE_ATTRIBUTES=compose_service=app-a
-      - OTEL_METRICS_EXPORTER=none
-      - MANAGEMENT_METRICS_TAGS_APPLICATION=app-a
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317 # send traces to Tempo
+      - OTEL_SERVICE_NAME=app-a # service name for Span
+      - OTEL_RESOURCE_ATTRIBUTES=compose_service=app-a # add custom resource attribute to Span for Grafana Trace to Logs feature
+      - OTEL_METRICS_EXPORTER=none # disable metrics exporter
+      - MANAGEMENT_METRICS_TAGS_APPLICATION=app-a # override default value of management.metrics.tags.application in app/src/main/resources/application.properties
     ports:
       - "8080:8080"
     logging: *default-logging
