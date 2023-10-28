@@ -61,6 +61,12 @@ This demo project is a Spring Boot version of [FastAPI with Observability](https
    bash trace.sh
    ```
 
+   Or you can send requests with [k6](https://k6.io/):
+
+    ```bash
+    k6 run --vus 3 --duration 300s k6-script.js
+    ```
+
 4. Check predefined dashboard ```Spring Boot Observability``` on Grafana [http://localhost:3000/](http://localhost:3000/) and login with default account ```admin``` and password ```admin```
 
    Dashboard screenshot:
@@ -115,7 +121,19 @@ The agent supports a lot of [libraries](https://github.com/open-telemetry/opente
 
 > It can be used to capture telemetry data at the “edges” of an app or service, such as inbound requests, outbound HTTP calls, database calls, and so on.
 
-So we don't need to modify any line of code in our codebase. The agent will handle everything automatically.
+So we don't need to modify any line of code in our codebase. The agent will handle everything automatically. In this project we have three kinds of actions could be captured by the agent:
+
+1. HTTP requests: capture http information like request method, status, and so on.
+   
+    ![Span data of HTTP requests](./images/span-data-http.png)
+   
+2. PostgreSQL actions: capture DB information like SQL statement, table name, and so on.
+
+    ![Span data of PostgreSQL actions](./images/span-data-postgresql.png)
+   
+3. Redis commands: capture Redis information like command, key, and so on.
+
+    ![Span data of Redis commands](./images/span-data-redis.png)
 
 The configurations, like the exporter setting, are listed on the [document](https://github.com/open-telemetry/opentelemetry-java/tree/main/sdk-extensions/autoconfigure), and are consumed by the agent from one or more of the following sources (ordered from highest to lowest priority):
 
@@ -131,7 +149,8 @@ app-a:
   build: ./app/
   environment:
     - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
-    - OTEL_RESOURCE_ATTRIBUTES=service.name=app-a,compose_service=app-a
+    - OTEL_SERVICE_NAME=app-a
+    - OTEL_RESOURCE_ATTRIBUTES=compose_service=app-a
     - OTEL_METRICS_EXPORTER=none
   ports:
     - "8080:8080"
@@ -142,7 +161,8 @@ Or using a configuration file is another common way to set the agent:
 ```properties
 # otel.properties
 otel.exporter.otlp.endpoint=http://tempo:4317
-otel.resource.attributes=service.name=app-a,compose_service=app-a
+otel.service.name=app-a
+otel.resource.attributes=compose_service=app-a
 otel.metrics.exporter=none
 ```
 
