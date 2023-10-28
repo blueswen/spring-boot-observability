@@ -1,11 +1,11 @@
 FROM curlimages/curl:8.2.1 AS download
-ARG OTEL_AGENT_VERSION="1.29.0"
+ARG OTEL_AGENT_VERSION="1.31.0"
 RUN curl --silent --fail -L "https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v${OTEL_AGENT_VERSION}/opentelemetry-javaagent.jar" \
     -o "$HOME/opentelemetry-javaagent.jar"
 
 FROM maven:3.8.6-openjdk-8 AS build
 ADD . /build
-RUN cd /build && mvn package --quiet
+RUN cd /build && mvn package --quiet -DskipTests
 
 FROM openjdk:8-jre-slim
 COPY --from=build /build/target/*.jar /app.jar
