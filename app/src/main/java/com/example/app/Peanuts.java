@@ -3,6 +3,7 @@ package com.example.app;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 public class Peanuts  implements Serializable {
@@ -11,7 +12,11 @@ public class Peanuts  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Schema(example = "Snoopy")
     private String name;
+
+    @Schema(example = "Charlie Brown's pet beagle")
     private String description;
 
     // Id
