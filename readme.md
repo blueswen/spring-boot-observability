@@ -39,8 +39,6 @@ This demo project is a Spring Boot version of [FastAPI with Observability](https
 
 ## Quick Start
 
-0. If your machine is Apple Silicon, pull ```linux/arm64/v8``` platform java images with ```pull_arm_images.sh``` first.
-
 1. Install [Loki Docker Driver](https://grafana.com/docs/loki/latest/clients/docker-driver/)
 
    ```bash
@@ -63,9 +61,15 @@ This demo project is a Spring Boot version of [FastAPI with Observability](https
 
    Or you can send requests with [k6](https://k6.io/):
 
-    ```bash
-    k6 run --vus 3 --duration 300s k6-script.js
-    ```
+   ```bash
+   k6 run --vus 3 --duration 300s k6-script.js
+   ```
+
+   Or send requests from applications' Swagger UI:
+
+    - app-a: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+    - app-b: [http://localhost:8081/swagger-ui/index.html](http://localhost:8081/swagger-ui/index.html)
+    - app-c: [http://localhost:8082/swagger-ui/index.html](http://localhost:8082/swagger-ui/index.html)
 
 4. Check predefined dashboard ```Spring Boot Observability``` on Grafana [http://localhost:3000/](http://localhost:3000/) and login with default account ```admin``` and password ```admin```
 
@@ -121,17 +125,17 @@ The agent supports a lot of [libraries](https://github.com/open-telemetry/opente
 
 > It can be used to capture telemetry data at the “edges” of an app or service, such as inbound requests, outbound HTTP calls, database calls, and so on.
 
-So we don't need to modify any line of code in our codebase. The agent will handle everything automatically. In this project we have three kinds of actions could be captured by the agent:
+So we don't need to modify any line of code in our codebase. The agent will handle everything automatically. In this project, we have three kinds of actions that could be captured by the agent:
 
-1. HTTP requests: capture http information like request method, status, and so on.
+1. HTTP requests: capture HTTP information like request method, status, and so on.
    
     ![Span data of HTTP requests](./images/span-data-http.png)
    
-2. PostgreSQL actions: capture DB information like SQL statement, table name, and so on.
+2. PostgreSQL actions(POST `/peanuts` and the first request of GET `/peanuts/{id}`): capture DB information like SQL statement, table name, and so on. 
 
     ![Span data of PostgreSQL actions](./images/span-data-postgresql.png)
    
-3. Redis commands: capture Redis information like command, key, and so on.
+3. Redis commands(From the second request of GET `/peanuts/{id}`): capture Redis information like commands, keys, and so on.
 
     ![Span data of Redis commands](./images/span-data-redis.png)
 
