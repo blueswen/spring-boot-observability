@@ -114,7 +114,7 @@ For a more complex scenario, we use three Spring Boot applications with the same
 
 #### OpenTelemetry Instrumentation
 
-[OpenTelemetry Instrumentation for Java](https://github.com/open-telemetry/opentelemetry-java-instrumentation) provides an [automatic way](https://opentelemetry.io/docs/instrumentation/java/automatic/) to instrument the application by the agent jar as follows:
+[OpenTelemetry Instrumentation for Java](https://github.com/open-telemetry/opentelemetry-java-instrumentation) provides a [zero-code way](https://opentelemetry.io/docs/zero-code/java/agent/) to instrument the application by the agent jar as follows:
 
 ```bash
 java -javaagent:path/to/opentelemetry-javaagent.jar -jar myapp.jar
@@ -176,7 +176,7 @@ java -javaagent:path/to/opentelemetry-javaagent.jar \
      -jar myapp.jar
 ```
 
-More configuration details can be found on the [official document](https://opentelemetry.io/docs/instrumentation/java/automatic/agent-config/).
+More configuration details can be found on the [official document](https://opentelemetry.io/docs/zero-code/java/agent/configuration/).
 
 #### Logs
 
