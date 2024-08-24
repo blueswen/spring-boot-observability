@@ -42,7 +42,7 @@ This demo project is a Spring Boot version of [FastAPI with Observability](https
 1. Install [Loki Docker Driver](https://grafana.com/docs/loki/latest/clients/docker-driver/)
 
    ```bash
-   docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
+   docker plugin install grafana/loki-docker-driver:2.9.2 --alias loki --grant-all-permissions
    ```
 
 2. Start all services with docker-compose
