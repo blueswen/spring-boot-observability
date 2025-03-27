@@ -25,5 +25,5 @@ jobs:
         with:
           context: ./app
           push: true
-          tags: ghcr.io/${{ github.repository }}/app:latest
+          tags: ghcr.io/${{ github.repository }}/app:${{ github.run_number }}
           platforms: linux/amd64,linux/arm64
