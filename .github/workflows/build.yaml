@@ -1,18 +1,7 @@
 name: Build and Push Docker Images
 
 on:
-  pull_request:
-    branches: [ main ]
-    paths:
-      - 'src/**'
-      - '.github/workflows/build.yaml'
-      - 'pom.xml'
-  push:
-    branches: [ main ]
-    paths:
-      - 'src/**'
-      - '.github/workflows/build.yaml'
-      - 'pom.xml'
+  workflow_dispatch:
 
 jobs:
   build-and-push:
@@ -36,5 +25,5 @@ jobs:
         with:
           context: ./app
           push: true
-          tags: ghcr.io/${{ github.repository }}/app:${{ github.run_number }}
+          tags: ghcr.io/${{ github.repository }}/app:latest
           platforms: linux/amd64,linux/arm64
