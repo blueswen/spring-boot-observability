@@ -4,17 +4,13 @@ x-logging: &default-logging
     loki-url: 'http://localhost:3100/api/prom/push'
     loki-pipeline-stages: |
       - multiline:
-          firstline: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3}'
+          firstline: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}'
           max_wait_time: 3s
       - regex:
-          expression: '^(?P<date>\d{4}-\d{2}-\d{2}) (?P<time>\d{2}:\d{2}:\d{2}.\d{3}) (?P<message>(?s:.*))$$'
-
-version: "3.4"
+          expression: '^(?P<date>\d{4}-\d{2}-\d{2})T(?P<time>\d{2}:\d{2}:\d{2}.\d{3}) (?P<message>(?s:.*))$$'
 
 services:
-
   # Infrastructure
-
   loki:
     image: grafana/loki:3.0.0
     command: -config.file=/etc/loki/local-config.yaml
@@ -66,9 +62,11 @@ services:
       - TARGET_ONE_HOST=app-b
       - TARGET_TWO_HOST=app-c
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317 # send traces to Tempo
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc # use gRPC for OTLP
       - OTEL_SERVICE_NAME=app-a # service name for Span
       - OTEL_RESOURCE_ATTRIBUTES=compose_service=app-a # add custom resource attribute to Span for Grafana Trace to Logs feature
       - OTEL_METRICS_EXPORTER=none # disable metrics exporter
+      - OTEL_LOGS_EXPORTER=none # disable logs exporter
       - MANAGEMENT_METRICS_TAGS_APPLICATION=app-a # override default value of management.metrics.tags.application in app/src/main/resources/application.properties
     ports:
       - "8080:8080"
@@ -81,9 +79,11 @@ services:
       - TARGET_ONE_HOST=app-b
       - TARGET_TWO_HOST=app-c
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
       - OTEL_SERVICE_NAME=app-b
       - OTEL_RESOURCE_ATTRIBUTES=compose_service=app-b
       - OTEL_METRICS_EXPORTER=none
+      - OTEL_LOGS_EXPORTER=none
       - MANAGEMENT_METRICS_TAGS_APPLICATION=app-b
     ports:
       - "8081:8080"
@@ -96,16 +96,18 @@ services:
       - TARGET_ONE_HOST=app-b
       - TARGET_TWO_HOST=app-c
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
       - OTEL_SERVICE_NAME=app-c
       - OTEL_RESOURCE_ATTRIBUTES=compose_service=app-c
       - OTEL_METRICS_EXPORTER=none
+      - OTEL_LOGS_EXPORTER=none
       - MANAGEMENT_METRICS_TAGS_APPLICATION=app-c
     ports:
       - "8082:8080"
     logging: *default-logging
 
   postgres:
-    image: postgres:16.2
+    image: postgres:17.4-alpine3.21
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
