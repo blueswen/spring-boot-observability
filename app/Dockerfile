@@ -3,7 +3,7 @@ ARG OTEL_AGENT_VERSION="2.14.0"
 RUN curl --silent --fail --insecure -L "https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v${OTEL_AGENT_VERSION}/opentelemetry-javaagent.jar" \
     -o "$HOME/opentelemetry-javaagent.jar"
 
-FROM maven:3.9.9-amazoncorretto-24-alpine AS build
+FROM maven:3-amazoncorretto-24-alpine AS build
 WORKDIR /build
 COPY . .
 RUN mvn clean package -DskipTests --quiet
