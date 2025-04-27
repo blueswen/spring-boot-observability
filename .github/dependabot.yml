@@ -3,21 +3,21 @@ updates:
   - package-ecosystem: maven
     directory: "/app"
     schedule:
-      interval: daily
-      time: '05:00'
-      timezone: Asia/Jakarta
+      interval: "weekly"
+      time: '10:00'
+      timezone: Asia/Taipei
     open-pull-requests-limit: 10
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
-      time: '05:00'
-      timezone: Asia/Jakarta
+      interval: "weekly"
+      time: '10:00'
+      timezone: Asia/Taipei
     open-pull-requests-limit: 10
   - package-ecosystem: "docker"
     directory: "/app"
     schedule:
-      interval: "daily"
-      time: '05:00'
-      timezone: Asia/Jakarta
+      interval: "weekly"
+      time: '10:00'
+      timezone: Asia/Taipei
     open-pull-requests-limit: 10
