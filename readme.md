@@ -45,10 +45,10 @@ This demo project is a Spring Boot version of [FastAPI with Observability](https
    docker plugin install grafana/loki-docker-driver:2.9.2 --alias loki --grant-all-permissions
    ```
 
-2. Start all services with docker-compose
+2. Start all services with docker compose
 
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
 
 3. Send requests with [siege](https://linux.die.net/man/1/siege) and curl to the Spring Boot app
@@ -153,8 +153,8 @@ app-a:
   environment:
     - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
     - OTEL_SERVICE_NAME=app-a
-    - OTEL_RESOURCE_ATTRIBUTES=compose_service=app-a
     - OTEL_METRICS_EXPORTER=none
+    - OTEL_LOGS_EXPORTER=none
   ports:
     - "8080:8080"
 ```
@@ -165,8 +165,8 @@ Or using a configuration file is another common way to set the agent:
 # otel.properties
 otel.exporter.otlp.endpoint=http://tempo:4317
 otel.service.name=app-a
-otel.resource.attributes=compose_service=app-a
 otel.metrics.exporter=none
+otel.logs.exporter=none
 ```
 
 ```bash
@@ -261,12 +261,12 @@ Add these two dependencies to the `pom.xml` and config to the `application.yaml`
 
 ```xml
 <dependency>
-   <groupId>org.springframework.boot</groupId>
-   <artifactId>spring-boot-starter-actuator</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
 </dependency>
 <dependency>
-   <groupId>io.micrometer</groupId>
-   <artifactId>micrometer-registry-prometheus</artifactId>
+    <groupId>io.micrometer</groupId>
+    <artifactId>micrometer-registry-prometheus</artifactId>
 </dependency>
 ```
 
@@ -303,33 +303,16 @@ http_server_requests_seconds_max{application="app",exception="None",method="GET"
 
 ##### Metrics with Exemplar
 
-Exemplar is a new datatype proposed in [OpenMetrics](https://github.com/OpenObservability/OpenMetrics/blob/main/specification/OpenMetrics.md#exemplars). To enable the Exemplar feature there are some dependencies requirements:
+Exemplar is a new datatype proposed in [OpenMetrics](https://github.com/OpenObservability/OpenMetrics/blob/main/specification/OpenMetrics.md#exemplars). To enable the Exemplar feature, we need to add the `micrometer-tracing-bridge-otel` dependency, which bridges Micrometer metrics with OpenTelemetry tracing.
 
-1. Spring Boot >= 2.7.0: Spring Boot supported Prometheus Exemplars since [v2.7.0-RC1](https://github.com/spring-projects/spring-boot/releases/tag/v2.7.0-RC1).
-2. Micrometer >= 1.10.0: Micrometer supported Exemplar for Prometheus Histogram and Prometheus Counter since [1.9.0](https://github.com/micrometer-metrics/micrometer/releases/tag/v1.9.0) and using io.prometheus.simpleclient_common 0.16.0 since [1.10.0](https://mvnrepository.com/artifact/io.micrometer/micrometer-registry-prometheus/1.10.0).
-
-Additionally, we need to add an [Exemplar Sampler](app/src/main/java/com/example/app/PrometheusExemplarSamplerConfiguration.java) (Source from [qaware/cloud-observability-grafana-spring-boot](https://github.com/qaware/cloud-observability-grafana-spring-boot/blob/b331b87b1a7f0f5b5d57150e0356e6a26af967a2/spring-boot-app/src/main/java/de/qaware/demo/cloudobservability/PrometheusExemplarSamplerConfiguration.java)) as follows:
-
-```java
-package com.example.app;
-
-import io.prometheus.client.exemplars.tracer.otel_agent.OpenTelemetryAgentSpanContextSupplier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-public class PrometheusExemplarSamplerConfiguration {
-    @Bean
-    public OpenTelemetryAgentSpanContextSupplier openTelemetryAgentSpanContextSupplier() {
-        // OpenTelemetryAgentSpanContextSupplier is from the opentelemetry agent jar, without using the agent will cause class not found error when running.
-        return new OpenTelemetryAgentSpanContextSupplier();
-    }
-}
+```xml
+<dependency>
+    <groupId>io.micrometer</groupId>
+    <artifactId>micrometer-tracing-bridge-otel</artifactId>
+</dependency>
 ```
 
-The discussion about Exemplar Sampler is in [Exemplars support for Prometheus Histogram #2812](https://github.com/micrometer-metrics/micrometer/issues/2812#issuecomment-1086001766) on the Micrometer repository.
-
-When all dependencies are addressed. We can add a distribution metric to Prometheus metrics in the `application.yaml`.
+When the dependency are addressed. We can add a distribution metric to Prometheus metrics in the `application.yaml`.
 
 ```yaml
 management:
@@ -340,8 +323,6 @@ management:
           server:
             requests: 'true'
 ```
-
-Check more options for distribution metrics on the [Spring Boot document](https://docs.spring.io/spring-boot/docs/2.7.3/reference/html/actuator.html#actuator.metrics.customizing.per-meter-properties).
 
 As previously mentioned, Exemplar is a new datatype proposed in OpenMetrics, and the default `/actuator/prometheus` provide metrics with Prometheus format. So we need to [add some headers](https://docs.spring.io/spring-boot/docs/current/actuator-api/htmlsingle/#prometheus.retrieving:~:text=The%20default%20response%20content%20type%20is%20text/plain%3Bversion%3D0.0.4.%20The%20endpoint%20can%20also%20produce%20application/openmetrics%2Dtext%3Bversion%3D1.0.0%20when%20called%20with%20an%20appropriate%20Accept%20header%2C%20as%20shown%20in%20the%20following%20curl%2Dbased%20example%3A) to get the metrics with OpenMetrics format as follows:
 
@@ -543,7 +524,7 @@ editable: true
 ```yaml
 # grafana in docker-compose.yaml
 grafana:
-   image: grafana/grafana:10.4.2
+   image: grafana/grafana:12.0.1
    volumes:
       - ./etc/grafana/:/etc/grafana/provisioning/datasources # data sources
       - ./etc/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml # dashboard setting
