@@ -418,8 +418,9 @@ Receives spans from applications.
 [Trace to logs](https://grafana.com/docs/grafana/latest/datasources/tempo/#trace-to-logs) setting:
 
 1. Data source: target log source
-2. Tags: key of tags or process level attributes from the trace, which will be log query criteria if the key exists in the trace
-3. Map tag names: Convert existing key of tags or process level attributes from trace to another key, then used as log query criteria. Use this feature when the values of the trace tag and log label are identical but the keys are different.
+2. Tags: key of tags from the trace, which will be log query criteria if the key exists in the trace
+   1. Without as value: use the key as query label
+   2. With as value: convert the tag key to another key as query label
 
 Grafana data source setting example:
 
