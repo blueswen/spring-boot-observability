@@ -15,7 +15,7 @@ x-app-dependencies: &app-dependencies
   postgres:
     condition: service_healthy
   redis:
-    condition: service_started
+    condition: service_healthy
 
 services:
   # Infrastructure
@@ -136,3 +136,8 @@ services:
     ports:
       - "6379:6379"
     logging: *default-logging
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5

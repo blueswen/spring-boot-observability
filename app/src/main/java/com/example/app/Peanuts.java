@@ -14,6 +14,7 @@ public class Peanuts  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
     @Schema(example = "Snoopy")

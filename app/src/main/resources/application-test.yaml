@@ -8,6 +8,8 @@ spring:
       ddl-auto: update
   cache:
     type: redis
-  redis:
-    host: localhost
-    port: 6379
+  # https://stackoverflow.com/a/79180709
+  data:
+    redis:
+      host: localhost
+      port: 6379
