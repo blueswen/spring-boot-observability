@@ -16,7 +16,7 @@ public class PeanutsService {
         return repository.findById(id).orElse(null);
     }
 
-    @CachePut(value = "peanuts", key = "#peanuts.id")
+    @CachePut(value = "peanuts", key = "#result.id")
     public Peanuts savePeanuts(Peanuts peanuts) {
         return repository.save(peanuts);
     }
